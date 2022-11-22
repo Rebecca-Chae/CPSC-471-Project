@@ -10,8 +10,8 @@
     while ($row = mysqli_fetch_array($result)){
         ?>
         <form action = "profile-client.php?update=edit" method = "post">
-            Username: <input type = "text" name = "username" value = '<?php echo $row['username'];?>'><br>
-            Password: <input type = "text" name = "password" value = '<?php echo $row['password'];?>'><br>
+            Username: <input type = "text" name = "Username" value = '<?php echo $row['username'];?>'><br>
+            Password: <input type = "text" name = "Password" value = '<?php echo $row['password'];?>'><br>
             Measured Date: <input type = "text" name = "date" value = '<?php echo $row['date'];?>'><br>
             Weight: <input type = "text" name = "weight" value = '<?php echo $row['weight'];?>'><br>
             Chest: <input type = "text" name = "chest" value = '<?php echo $row['chest'];?>'><br>
@@ -54,9 +54,6 @@
                 <img src = "./.png" alt = " " title = " " width = " "> -->
             </div>
         </header>
-        <div id = "upcoming">
-            <p>Your next Scheduled Appointment is on</p> <!-- different values for different users -->
-        </div>
         <div id = "measurement">
             <ul> <!-- different values for different users -->
                 <li id = "date"><?php $date ?></li>

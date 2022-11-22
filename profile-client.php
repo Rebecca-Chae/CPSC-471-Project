@@ -1,11 +1,11 @@
 <?php
     // IP, ID, Password, Name of DB
-    $connection = mysqli_connect("localhost", " ", " ", "fitnessTracker");
+    $connection = mysqli_connect("host", "id", "password", "fitnessTracker");
 
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
-    $username = $_GET["username"];
+    $username = $_GET["Username"];
 
     
 ?>

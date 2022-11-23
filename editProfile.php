@@ -1,31 +1,33 @@
 <?php
     // IP, ID, Password, Name of DB
-    $connection = mysqli_connect("localhost", " ", " ", "fitnessTracker");
+    $connection = mysqli_connect("localhost", "root", " ", "database");
 
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
-    $result = mysqli_query($connection, "SELECT * FROM users where ID =" .$username);
+    $result = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username =" .$username);
 
-    while ($row = mysqli_fetch_array($result)){
+    // Since I already found the same user with the same ID, I don't think I need to put it in the loop?
+    // while ($row = mysqli_fetch_array($result)){ 
         ?>
         <form action = "profile-client.php?update=edit" method = "post">
-            Username: <input type = "text" name = "Username" value = '<?php echo $row['username'];?>'><br>
-            Password: <input type = "text" name = "Password" value = '<?php echo $row['password'];?>'><br>
-            Measured Date: <input type = "text" name = "date" value = '<?php echo $row['date'];?>'><br>
-            Weight: <input type = "text" name = "weight" value = '<?php echo $row['weight'];?>'><br>
-            Chest: <input type = "text" name = "chest" value = '<?php echo $row['chest'];?>'><br>
-            Hips: <input type = "text" name = "hips" value = '<?php echo $row['hips'];?>'><br>
+            Username: <input type = "text" name = "Username" value = '<?php echo $result['username'];?>'><br>
+            Password: <input type = "text" name = "Password" value = '<?php echo $result['password'];?>'><br>
+            Measured Date: <input type = "text" name = "date" value = '<?php echo $result['date'];?>'><br>
+            Weight: <input type = "text" name = "weight" value = '<?php echo $result['weight'];?>'><br>
+            Chest: <input type = "text" name = "chest" value = '<?php echo $result['chest'];?>'><br>
+            Hips: <input type = "text" name = "hips" value = '<?php echo $result['hips'];?>'><br>
             <input type = "submit" value = "Edit">
         </form>
         <?php
-    }
+    // }
 
-    $username = $_GET["username"];
-    $date = $_GET["date"];
-    $weight = $_GET["weight"];
-    $chest = $_GET["chest"];
-    $hips = $_GET["hips"];
+    $username = $_GET[$result['Username']];
+    $date = $_GET[$result['Date']];
+    $weight = $_GET[$result["Weight"]];
+    $waist = $_GET[$result["Waist"]];
+    $chest = $_GET[$result["Chest"]];
+    $hips = $_GET[$result["Hips"]];
 
     mysqli_close($connection);
 ?>

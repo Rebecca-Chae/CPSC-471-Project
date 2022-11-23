@@ -1,13 +1,25 @@
 <?php
+    $secret = 'this is my password :)...';
+
     // IP, ID, Password, Name of DB
-    $connection = mysqli_connect("host", "id", "password", "fitnessTracker");
+    $connection = mysqli_connect("localhost", "root", $secret, "database");
 
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
-    $username = $_GET["Username"];
+    $result = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username =" .$username);
+    $username = $_GET[$result['Username']];
+    $date = $_GET[$result['Date']];
+    $weight = $_GET[$result["Weight"]];
+    $waist = $_GET[$result["Waist"]];
+    $chest = $_GET[$result["Chest"]];
+    $hips = $_GET[$result["Hips"]];
 
-    
+    $schedule = mysqli_query($connection, "SELECT * FROM Appointments where Client_Username =" .$username);
+    $date = $schedule['Date'];
+    $time = $schedule['Time'];
+
+    mysqli_close($connection);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +38,6 @@
                 ?>
             </div>
             <div style = "text-align: center">
-                <!-- We would need another page to allow users to modify their profiles themselves, but I couldn't think about it!!!-->
                 <button id = "b1"><a href = "editProfile.php">Edit Profile</button>
                 <button id = "b2"><a href = "logOut.php">Log Out</a></button>
             </div>
@@ -37,15 +48,17 @@
             </div>
         </header>
         <div id = "upcoming">
-            <p>Your next Scheduled Appointment is on</p> <!-- different values for different users -->
+            <p>
+                Your next Scheduled Appointment is on <?php $date ?> at <?php $time ?>
+            </p>
         </div>
         <div id = "measurement">
-            <ul> <!-- different values for different users -->
-                <li id = "date"></li>
-                <li id = "weight">Weight : </li>
-                <li id = "waist">Waist : </li>
-                <li id = "chest">Chest : </li>
-                <li id = "hips">Hips : </li>
+            <ul>
+                <li id = "date"><?php $date ?></li>
+                <li id = "weight">Weight : <?php $weight ?></li>
+                <li id = "waist">Waist : <?php $waist ?></li>
+                <li id = "chest">Chest : <?php $chest ?></li>
+                <li id = "hips">Hips : <?php $hips ?></li>
             </ul>
         </div>
         <div id = "completedExercise">

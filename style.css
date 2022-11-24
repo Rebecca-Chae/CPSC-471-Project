@@ -1,0 +1,7 @@
+*{margin: 0px; padding: 0px;}
+
+/* No default deco & color for links */
+a{
+    text-decoration: none;
+    color: inherit;
+}

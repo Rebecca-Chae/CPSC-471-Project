@@ -7,17 +7,25 @@
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
-    $result = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username =" .$username);
-    $username = $_GET[$result['Username']];
-    $date = $_GET[$result['Date']];
-    $weight = $_GET[$result["Weight"]];
-    $waist = $_GET[$result["Waist"]];
-    $chest = $_GET[$result["Chest"]];
-    $hips = $_GET[$result["Hips"]];
+    $username = $_GET['Username'];
+
+    $measurement = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username =" .$username);
+    $date = $_GET[$measurement['Date']];
+    $weight = $_GET[$measurement["Weight"]];
+    $waist = $_GET[$measurement["Waist"]];
+    $chest = $_GET[$measurement["Chest"]];
+    $hips = $_GET[$measurement["Hips"]];
 
     $schedule = mysqli_query($connection, "SELECT * FROM Appointments where Client_Username =" .$username);
     $date = $schedule['Date'];
     $time = $schedule['Time'];
+
+    $routine = mysqli_query($connection, "SELECT * FROM Workout_Routine where Client_Username =" .$username);
+    $i = 0;
+    while ($row = mysqli_fetch_array($routine)){
+        $exercise[$i] = $_GET[$routine['Exercise_Name']];
+        ++$i;
+    }
 
     mysqli_close($connection);
 ?>
@@ -54,7 +62,7 @@
         </div>
         <div id = "measurement">
             <ul>
-                <li id = "date"><?php $date ?></li>
+                <li id = "date">Measured on : <?php $date ?></li>
                 <li id = "weight">Weight : <?php $weight ?></li>
                 <li id = "waist">Waist : <?php $waist ?></li>
                 <li id = "chest">Chest : <?php $chest ?></li>
@@ -65,17 +73,25 @@
             <H3>Exercise Completed</H3>
             <table>
                 <tr align = center height = "15"></tr>
-                    <th></th> <!-- today's date -->
-                    <th></th>
+                    <th class = "day"></th>
+                    <th id = "7Days"></th>
                 </tr>
                 <tr align = "center">
                     <td>
-                        <ol>
+                        <ol type = "I">
                             <!-- ordered list of exercises -->
+                            <?php
+                                for ($i = 0; $i < count($exercise); ++$i){
+                                    "<li>$exercise[$i]</li>";
+                                }
+                            ?>
                         </ol>
                     </td>
                     <td>
-                        <summary>Today</summary>
+                        <details>
+                            <summary>Today</summary>
+                                <ol class = "sum"></ol>
+                        </details>
                         <!-- the last three days, the next three days, as of today -->
                     </td>
                 </tr>
@@ -93,18 +109,19 @@
             <H3>Food's Consumed</H3>
             <table>
                 <tr align = center height = "15"></tr>
-                    <th></th> <!-- today's date -->
-                    <th></th>
+                    <th class = "day"></th> <!-- today's date -->
+                    <th id = "7Days"></th>
                 </tr>
                 <tr align = "center">
                     <td>
                         <ol>
-                            <!-- ordered list of exercises -->
+                            <!-- ordered list of food -->
                         </ol>
                     </td>
                     <td>
                         <details>
                             <summary>Today</summary>
+                                <ol class = "sum"></ol>
                             <!-- the last three days, the next three days, as of today -->
                         </details>
                     </td>
@@ -176,8 +193,34 @@
         <footer>
             Copyright 2022. Fitness Tracker All rights reserved.
         </footer>
-        <script language = "javascript">
+        <script type="text/javascript">
+            let today = document.getElementsByClassName("day");
             
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = now.getMonth() + 1; //.getMonth() = current month - 1
+            let date = now.getDate();
+            let day = now.getDay();
+
+            if (day === 0) day = "Sunday";
+            else if (day === 1) day = "Monday";
+            else if (day === 2) day = "Tuesday";
+            else if (day === 3) day = "Wednesday";
+            else if (day === 4) day = "Thursday";
+            else if (day === 5) day = "Friday";
+            else if (day === 6) day = "Saturday";
+            console.log(today);
+            for (let i = 0; i < today.length; ++i){
+                today[i].innerHTML = month + "." + date + "." + year + " (" + day + ")";
+            }
+
+            let week = document.getElementsByClassName("sum");
+            let threeDaysAgo = date - 3;
+            for (let i = 0; i < week.length; ++i){
+                for (let j = 0; j < 7; ++j){
+                    week[i].innerHTML += `<li>${month}.${threeDaysAgo + j}.${year}</li>`;
+                }
+            }
         </script>
     </body>
 </html>

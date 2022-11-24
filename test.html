@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang = "en-US">
+    <head>
+        <link href = "./style.css?ver=1" rel = "stylesheet"> <!-- We can put an externally made css file in here -->
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+        <title>Fitness Tracker</title>
+    </head>
+    <body>
+        <header>
+            <div id = "username">
+                <!-- username -->
+            </div>
+            <div style = "text-align: center">
+                <!-- We would need another page to allow users to modify their profiles themselves, but I couldn't think about it!!!
+                If we have time, let's make it but if not, take it out -->
+                <button id = "b1"><a href = "edit.html">Edit Profile</a></button>
+                <button id = "b2"><a href = "logOut.html">Log Out</a></button>
+            </div>
+            <div id = headerImage>
+                <!-- I'm thinking about putting it in for design,
+                so should I make it possible for users to upload it themselves? Or any image?
+                <img src = "./.png" alt = " " title = " " width = " "> -->
+            </div>
+        </header>
+        <div id = "upcoming">
+            <p>Your next Scheduled Appointment is on</p> <!-- different values for different users -->
+        </div>
+        <div id = "measurement">
+            <ul> <!-- different values for different users -->
+                <li id = "date"></li>
+                <li id = "weight">Weight : </li>
+                <li id = "waist">Waist : </li>
+                <li id = "chest">Chest : </li>
+                <li id = "hips">Hips : </li>
+            </ul>
+        </div>
+        <div id = "completedExercise">
+            <H3>Exercise Completed</H3>
+            <table>
+                <tr align = center height = "15"></tr>
+                    <th></th> <!-- today's date -->
+                    <th></th>
+                </tr>
+                <tr align = "center">
+                    <td>
+                        <ol>
+                            <!-- ordered list of exercises -->
+                        </ol>
+                    </td>
+                    <td>
+                        <summary>Today</summary>
+                        <!-- the last three days, the next three days, as of today -->
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id = caloriesBurned>
+            <!-- donut chart that requires javascript or php -->
+            Calories Burned Today
+        </div>
+        <button id = "addExercise">
+            Add Exercise
+            <!-- mouse click event that requires javascript or php -->
+        </button>
+        <div id = "consumedFood">
+            <H3>Food's Consumed</H3>
+            <table>
+                <tr align = center height = "15"></tr>
+                    <th></th> <!-- today's date -->
+                    <th></th>
+                </tr>
+                <tr align = "center">
+                    <td>
+                        <ol>
+                            <!-- ordered list of exercises -->
+                        </ol>
+                    </td>
+                    <td>
+                        <details>
+                            <summary>Today</summary>
+                            <!-- the last three days, the next three days, as of today -->
+                        </details>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id = caloriesConsumed>
+            <!-- donut chart that requires javascript or php -->
+            Calories Consumed Today
+        </div>
+        <button id = "addFood">
+            Add Food
+            <!-- mouse click event that requires javascript or php -->
+        </button>
+        <div id = "professionals">
+            <table>
+                <tr align = center height = "15"></tr>
+                    <th>Professionals</th>
+                </tr>
+                <tr align = "center">
+                    <td>
+                        <ol> <!-- ordered list of professionals -->
+                            <details>
+                                <summary><!-- name of professionals --></summary>
+                                <!-- Additional info of the professional -->
+                            </details>
+                            <details>
+                                <summary><!-- name of professionals --></summary>
+                                <!-- Additional info of the professional -->
+                            </details>
+                            <details>
+                                <summary><!-- name of professionals --></summary>
+                                <!-- Additional info of the professional -->
+                            </details>
+                        </ol>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id = "Friends">
+            <table>
+                <tr align = center height = "15"></tr>
+                    <th>Professionals</th>
+                </tr>
+                <tr align = "center">
+                    <td>
+                        <ol> <!-- ordered list of friend -->
+                            <details>
+                                <summary><!-- name of friend --></summary>
+                                <!-- Additional info of the friend -->
+                            </details>
+                            <details>
+                                <summary><!-- name of friend --></summary>
+                                <!-- Additional info of the friend -->
+                            </details>
+                            <details>
+                                <summary><!-- name of friend --></summary>
+                                <!-- Additional info of the friend -->
+                            </details>
+                        </ol>
+                        <button id = "addFriends">
+                            Add Friends
+                            <!-- mouse click event that requires javascript or php -->
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <footer>
+            Copyright 2022. Fitness Tracker All rights reserved.
+        </footer>
+        <script src = " "></script>
+    </body>
+</html>

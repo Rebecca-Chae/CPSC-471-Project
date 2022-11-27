@@ -1,33 +1,21 @@
 <?php
+    $secret = '';
+
     // IP, ID, Password, Name of DB
-    $connection = mysqli_connect("localhost", "root", " ", "database");
+    $connection = mysqli_connect("localhost", "root", $secret, "database");
 
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
     $result = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username =" .$username);
+    $row = mysqli_fetch_array($result);
 
-    // Since I already found the same user with the same ID, I don't think I need to put it in the loop?
-    // while ($row = mysqli_fetch_array($result)){ 
-        ?>
-        <form action = "profile-client.php?update=edit" method = "post">
-            Username: <input type = "text" name = "Username" value = '<?php echo $result['username'];?>'><br>
-            Password: <input type = "text" name = "Password" value = '<?php echo $result['password'];?>'><br>
-            Measured Date: <input type = "text" name = "date" value = '<?php echo $result['date'];?>'><br>
-            Weight: <input type = "text" name = "weight" value = '<?php echo $result['weight'];?>'><br>
-            Chest: <input type = "text" name = "chest" value = '<?php echo $result['chest'];?>'><br>
-            Hips: <input type = "text" name = "hips" value = '<?php echo $result['hips'];?>'><br>
-            <input type = "submit" value = "Edit">
-        </form>
-        <?php
-    // }
-
-    $username = $_GET[$result['Username']];
-    $date = $_GET[$result['Date']];
-    $weight = $_GET[$result["Weight"]];
-    $waist = $_GET[$result["Waist"]];
-    $chest = $_GET[$result["Chest"]];
-    $hips = $_GET[$result["Hips"]];
+    $username = $row['Username'];
+    $date = $row['Date'];
+    $weight = $row["Weight"];
+    $waist = $row["Waist"];
+    $chest = $row["Chest"];
+    $hips = $row["Hips"];
 
     mysqli_close($connection);
 ?>
@@ -47,23 +35,21 @@
                     echo $username;
                 ?>
             </div>
-            <div style = "text-align: center">
-                <button><a href = "profile-client.php">Go Back</button>
-            </div>
-            <div id = headerImage>
-                <!-- I'm thinking about putting it in for design,
-                so should I make it possible for users to upload it themselves? Or any image?
-                <img src = "./.png" alt = " " title = " " width = " "> -->
+            <div id = "option" style = "float: right;">
+                <button id = "b1"><a href = "profile-client.php">Go Back</button>
             </div>
         </header>
-        <div id = "measurement">
-            <ul> <!-- different values for different users -->
-                <li id = "date"><?php $date ?></li>
-                <li id = "weight">Weight : <?php $weight ?></li>
-                <li id = "waist">Waist : <?php $waist ?></li>
-                <li id = "chest">Chest : <?php $chest ?></li>
-                <li id = "hips">Hips : <?php $hips ?></li>
-            </ul>
+        <div>
+            <div id = "title">Client's Information</div>
+            <form method = "post">
+                Username: <input type = "text" name = "Username" value = '<?php echo $row['username'];?>'><br>
+                Password: <input type = "text" name = "Password" value = '<?php echo $row['password'];?>'><br>
+                Measured Date: <input type = "text" name = "date" value = '<?php echo $row['date'];?>'><br>
+                Weight: <input type = "text" name = "weight" value = '<?php echo $row['weight'];?>'><br>
+                Chest: <input type = "text" name = "chest" value = '<?php echo $row['chest'];?>'><br>
+                Hips: <input type = "text" name = "hips" value = '<?php echo $row['hips'];?>'><br>
+                <input type = "submit" value = "Edit">
+            </form>
         </div>
         <footer>
             Copyright 2022. Fitness Tracker All rights reserved.

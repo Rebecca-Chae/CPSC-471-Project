@@ -1,7 +1,208 @@
-*{margin: 0px; padding: 0px;}
+*{margin: 0px; padding: 0px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;}
 
 /* No default deco & color for links */
 a{
     text-decoration: none;
     color: inherit;
+}
+
+/* Under <header> Tag */
+
+header{
+    display: flex;
+    width: 100%; height: 100px;
+    background-color: rgb(220, 225, 230);
+    border-bottom: 3px solid rgb(87, 89, 105);
+    align-items: center;
+}
+
+#username{
+    margin-left: 30px;  margin-right: auto;
+    margin-top: 20px;
+    font-size: 40px;
+}
+
+#option{
+    margin-right: 10px;
+    margin-top: 20px;
+    display: flex;
+    text-align: center;
+}
+
+#b1, #b2{
+    margin-right: 20px;
+    padding: 10px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 10px;
+    width: 100px;
+    background-color: white;
+    box-shadow: 0px 3px rgb(204, 207, 210);
+}
+
+#b1:hover, #b2:hover{
+    background-color: rgb(247, 248, 249);
+}
+
+/* After <header> Tag */
+
+#upcoming{
+    margin: 30px;
+    margin-top: 20px;
+}
+
+#measurement{
+    margin: 30px;
+}
+
+ul li{
+    padding: 5px;
+    list-style-type: none;
+}
+
+/* Section 1 & 2*/
+
+#section1 table, #section1 td, #section1 tr,
+#section2 table, #section2 td, #section2 tr{
+    vertical-align: top;
+    border-collapse : collapse;
+    background-color: white;
+}
+
+#completedExercise, #consumedFood, #caloriesBurned, #caloriesConsumed{
+    margin-left: 30px;
+}
+
+H3{    
+    margin-bottom: 20px;
+}
+
+#completedExercise table, #completedExercise td, #completedExercise tr,
+#consumedFood table, #consumedFood td, #consumedFood tr{
+    padding: 20px;
+    border: 2.5px solid rgb(87, 89, 105);
+    border-collapse : collapse;
+}
+
+.day, #sevenDays{
+    font-weight: bold;
+    color: rgb(41, 52, 130);
+}
+
+#completedExercise tr:nth-child(odd),
+#consumedFood tr:nth-child(odd){
+    height: 30px;
+}
+
+#completedExercise td:nth-child(odd),
+#consumedFood td:nth-child(odd){
+    width: 250px;
+}
+
+#completedExercise td:nth-child(even),
+#consumedFood td:nth-child(even){
+    width: 100px;
+    vertical-align: middle;
+    background-color: rgb(153, 204, 255);
+}
+
+ol li{
+    margin: 10px;
+}
+
+#burnedChart, #consumedChart{
+    position: relative;
+    margin: 30px;
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+}
+
+#burnedChart::after, #consumedChart::after{
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+#addExercise, #addFood{
+    margin: 30px;
+    padding: 10px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 10px;
+    width: 150px;
+    background-color: rgb(153, 204, 255);
+    box-shadow: 0px 3px rgb(98, 146, 194);
+}
+
+#addExercise:hover, #addFood:hover{
+    background-color: rgb(144, 193, 243);
+}
+/* Section 3 & 4 */
+
+#professionals table{
+    position: absolute;
+    top: 103px;     right: 200px;
+    width: 200px;   height: 100vh;
+    background-color: white;
+}
+
+#friends table{
+    position: absolute;
+    top: 103px;     right: 0;
+    width: 200px;   height: 100vh;
+    background-color: white;
+}
+
+#professionals table, #professionals td, #professionals tr,
+#friends table, #friends td, #friends tr{
+    padding: 10px;
+    border : 2.5px solid rgb(87, 89, 105);
+    border-top: none;   border-right: none;
+    border-collapse : collapse;
+}
+
+#professionals tr:first-child, #friends tr:first-child{
+    height: 40px;
+}
+
+#professionals tr:nth-child(even), #friends tr:nth-child(even){
+    vertical-align: top;
+}
+
+#professionals summary{
+    margin: 10px;
+}
+
+#addFriends{
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 15px;
+    border: 0;
+    border-radius: 10px;
+    width: 100px;
+    background-color: rgb(153, 204, 255);
+    box-shadow: 0px 3px rgb(98, 146, 194);
+}
+
+#addFriends:hover{
+    background-color: rgb(144, 193, 243);
+}
+
+form{
+    margin: 30px;
+}
+
+/* Footer */
+
+footer{
+    margin: 30px;
+    bottom: 10px;
+    clear: both;
+    float: right;
 }

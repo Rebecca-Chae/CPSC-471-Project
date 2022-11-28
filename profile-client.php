@@ -4,19 +4,12 @@
     // IP, ID, Password, Name of DB
     $connection = mysqli_connect("localhost", "root", $secret, "database");
 
-    // I tried to get the value delivered through the form, but it is not being added to DB
-    $newExercise = $_POST['addEx'];
-    if ($newExercise != null){
-        $sql = "INSERT INTO Performs (Exercise_Name, Client_Username, Date) VALUES ('".$newExercise."','".$username."','".$today."')";
-        mysqli_query($connection, $sql);
-    }
-
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
     // Get the username from the log-in page
     // I hard-coded it for now, I need to check if it is linked to the login page
-    $username = $_GET['Username'];
+    $username = $_POST['Username'];
     $username = "JennySmith123";
 
     // Get the body measurements
@@ -30,7 +23,7 @@
 
     // Get the next schedule
     date_default_timezone_set('Canada/Mountain');
-    $today = date('Y-m-d H:i:s', time());
+    $today = date('Y-m-d', time());
     $row = mysqli_query($connection, "SELECT * FROM Appointments where Client_Username = '".$username."'");
     while ($schedule = mysqli_fetch_array($row)){
         if (strtotime($schedule['Date']) > strtotime($today)){
@@ -40,12 +33,46 @@
         }
     }
 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($newExercise = $_POST['addEx']){
+            $row = mysqli_query($connection, "SELECT * FROM Exercise where Exercise_Name = '".$newExercise."'");
+            if (mysqli_fetch_array($row)){ 
+                $sql = "INSERT INTO Performs (Exercise_Name, Client_Username, Date) VALUES ('".$newExercise."','".$username."','".$today."')";
+                mysqli_query($connection, $sql);
+            } else{
+                exit('<script>alert("It\'s a workout that doesn\'t exist on the exercise list. Please contact the administrator.");location.replace("profile-client.php")</script>');
+            }
+        }
+
+        if ($newFood = $_POST['addFd']){
+            $row = mysqli_query($connection, "SELECT * FROM Food_Item where FoodID = '".$newFood."'");
+            if ( mysqli_fetch_array($row)){
+                $sql = "INSERT INTO Eats (FoodID, Client_Username, Date) VALUES ('".$newFood."','".$username."','".$today."')";
+                mysqli_query($connection, $sql);
+            } else{
+                exit('<script>alert("It\'s a food that doesn\'t exist on the food list. Please contact the administrator.");location.replace("profile-client.php")</script>');
+            }
+        }
+
+        if ($newFriend = $_POST['addFr']){
+            $row = mysqli_query($connection, "SELECT * FROM User where Username = '".$newFriend."'");
+            if (mysqli_fetch_array($row)){
+                $sql = "INSERT INTO Friends_With (Friends_Username, Client_Username) VALUES ('".$newFriend."','".$username."')";
+                mysqli_query($connection, $sql);
+            } else{
+                exit('<script>alert("This user does not exist on our website. Please check the username again.");location.replace("profile-client.php")</script>');
+            }
+        }
+    }
+
     // Get the performed exercises
     $row = mysqli_query($connection, "SELECT * FROM Performs where Client_Username = '".$username."'");
     $i = 0;
     while ($performed = mysqli_fetch_array($row)){
-        $performedExercise[$i] = $performed['Exercise_Name'];
-        ++$i;
+        if (strtotime($performed['Date']) == strtotime($today)){
+            $performedExercise[$i] = $performed['Exercise_Name'];
+            ++$i;
+        }
     }
     $calories_Burned = 0;
     for ($i = 0; $i < count($performedExercise); ++$i){
@@ -74,8 +101,10 @@
     $row = mysqli_query($connection, "SELECT * FROM Eats where Client_Username = '".$username."'");
     $i = 0;
     while ($ate = mysqli_fetch_array($row)){
-        $consumedFood[$i] = $ate['FoodID'];
-        ++$i;
+        if (strtotime($ate['Date']) == strtotime($today)){
+            $consumedFood[$i] = $ate['FoodID'];
+            ++$i;
+        }
     }
     $calories_Earned = 0;
     for ($i = 0; $i < count($consumedFood); ++$i){
@@ -165,7 +194,7 @@
         <div id = "section1">
             <table>
                 <tr>
-                    <td >
+                    <td>
                         <div id = "completedExercise">
                             <H3>• Exercise Completed</H3>
                             <table>
@@ -188,7 +217,8 @@
                                             ?>
                                         </ol>
                                         <form action = "profile-client.php" method = "post">
-                                            <input type = "text" name = "addEx" id = "added" style = "width: 250px; height: 30px;">
+                                            <input type = "text" name = "addEx" id = "addedEx" style = "width: 150px; height: 30px;">
+                                            <input id = "addExercise" type = "submit" value = "Add Exercise" onclick = "addExercise()">
                                         </form>
                                     </td>
                                 </tr>
@@ -202,17 +232,13 @@
                         </div>
                     </td>
                 </tr>
-                <tr align = center>
-                    <td>
-                        <button id = "addExercise" type = "button" onclick = "addText()">Add Exercise</button>
-                    </td>
-                </tr>
             </table>
         </div>
+        <br></br>
         <div id = "section2">
             <table>
                 <tr>
-                    <td >
+                    <td>
                         <div id = "consumedFood">
                             <H3>• Food's Consumed</H3>
                             <table>
@@ -227,13 +253,17 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ol>
+                                        <ol id = "foodList">
                                             <?php
                                                 for ($i = 0; $i < count($consumedFood); ++$i){
                                                     echo "<li>$consumedFood[$i]</li>";
                                                 }
                                             ?>
                                         </ol>
+                                        <form action = "profile-client.php" method = "post">
+                                            <input type = "text" name = "addFd" id = "addedFood" style = "width: 150px; height: 30px;">
+                                            <input id = "addFood" type = "submit" value = "Add Food" onclick = "addFood()">
+                                        </form>
                                     </td>
                                 </tr>
                             </table>
@@ -246,13 +276,6 @@
                         </div>
                     </td>
                 </tr>
-                <tr align = center>
-                    <td>
-                        <button id = "addFood" onclick = "addText()">
-                            Add Food
-                        </button>
-                    </td>
-                </tr>
             </table>
         </div>
         <div id = "friends">
@@ -262,16 +285,17 @@
                 </tr>
                 <tr align = "center">
                     <td>
-                        <ul>
+                        <ul id = "friendlist">
                         <?php
                             for ($i = 0; $i < count($friends); ++$i){
                                 echo "<li>$friends[$i]</li>";
                             }
                         ?>
                         </ul>
-                        <button id = "addFriends">
-                            Add Friends
-                        </button>
+                        <form action = "profile-client.php" method = "post">
+                            <input type = "text" name = "addFr" id = "addedFriends" style = "width: 150px; height: 30px;">
+                            <input id = "addFriends" type = "submit" value = "Add Food" onclick = "addFriends()">
+                        </form>
                     </td>
                 </tr>
             </table>
@@ -346,18 +370,34 @@
 
             const previous = document.getElementById("consumedChart");
 
-            const exerciseButton = document.getElementById("addExercise");
-            const addition = document.getElementById("added");
-            const exerciseList = document.getElementById("exerciseList");
-            function addText(){
+            function addExercise(){
+                const exerciseButton = document.getElementById("addExercise");
+                let addition = document.getElementById("addedEx");
+                const exerciseList = document.getElementById("exerciseList");
                 if (addition.value == "") return;
                 let list = document.createElement("li");
                 list.innerHTML = addition.value;
                 exerciseList.appendChild(list);
-                // setTimeout(() => {
-                //     location.reload(`client-profile.php?mode=addEx&value=${list}`);
-                // }, 100);
-                // list.appendChild(del);
+            }
+
+            function addFood(){
+                const foodButton = document.getElementById("addFood");
+                let addition = document.getElementById("addedFood");
+                const foodList = document.getElementById("foodList");
+                if (addition.value == "") return;
+                let list = document.createElement("li");
+                list.innerHTML = addition.value;
+                foodList.appendChild(list);
+            }
+
+            function addFriends(){
+                const friendButton = document.getElementById("addFriends");
+                let addition = document.getElementById("addedFriends");
+                const friendlist = document.getElementById("friendlist");
+                if (addition.value == "") return;
+                let list = document.createElement("li");
+                list.innerHTML = addition.value;
+                friendlist.appendChild(list);
             }
         </script>
     </body>

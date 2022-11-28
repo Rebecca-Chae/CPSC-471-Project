@@ -46,7 +46,7 @@
 
         if ($newFood = $_POST['addFd']){
             $row = mysqli_query($connection, "SELECT * FROM Food_Item where FoodID = '".$newFood."'");
-            if ( mysqli_fetch_array($row)){
+            if (mysqli_fetch_array($row)){
                 $sql = "INSERT INTO Eats (FoodID, Client_Username, Date) VALUES ('".$newFood."','".$username."','".$today."')";
                 mysqli_query($connection, $sql);
             } else{
@@ -62,6 +62,48 @@
             } else{
                 exit('<script>alert("This user does not exist on our website. Please check the username again.");location.replace("profile-client.php")</script>');
             }
+        }
+    }
+
+    if (isset($_GET['deletedEx'])){
+        $deleted = $_GET['deletedEx'];
+        $row = mysqli_query($connection, "SELECT * FROM Performs where Client_Username = '".$username."'");
+        $i = 0;
+        while ($performed = mysqli_fetch_array($row)){
+            if ($i == $deleted){
+                $deleted = $performed['Exercise_Name'];
+                $sql = "DELETE FROM Performs WHERE Exercise_Name = '".$deleted."'";
+                mysqli_query($connection, $sql);
+            }
+            ++$i;
+        }
+    }
+
+    if (isset($_GET['deletedFd'])){
+        $deleted = $_GET['deletedFd'];
+        $row = mysqli_query($connection, "SELECT * FROM Eats where Client_Username = '".$username."'");
+        $i = 0;
+        while ($ate = mysqli_fetch_array($row)){
+            if ($i == $deleted){
+                $deleted = $ate['FoodID'];
+                $sql = "DELETE FROM Eats WHERE FoodID = '".$deleted."'";
+                mysqli_query($connection, $sql);
+            }
+            ++$i;
+        }
+    }
+
+    if (isset($_GET['deletedFr'])){
+        $deleted = $_GET['deletedFr'];
+        $row = mysqli_query($connection, "SELECT * FROM Friends_With where Client_Username = '".$username."'");
+        $i = 0;
+        while ($friends = mysqli_fetch_array($row)){
+            if ($i == $deleted){
+                $deleted = $friends['Friends_Username'];
+                $sql = "DELETE FROM Friends_With WHERE Friends_Username = '".$deleted."'";
+                mysqli_query($connection, $sql);
+            }
+            ++$i;
         }
     }
 
@@ -209,16 +251,16 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ol id = "exerciseList">
+                                        <ol>
                                             <?php
                                                 for ($i = 0; $i < count($performedExercise); ++$i){
-                                                    echo "<li>$performedExercise[$i]</li>";
+                                                    echo "<li class = 'exerciseList'>$performedExercise[$i]</li>";
                                                 }
                                             ?>
                                         </ol>
                                         <form action = "profile-client.php" method = "post">
                                             <input type = "text" name = "addEx" id = "addedEx" style = "width: 150px; height: 30px;">
-                                            <input id = "addExercise" type = "submit" value = "Add Exercise" onclick = "addExercise()">
+                                            <input id = "addExercise" type = "submit" value = "Add Exercise">
                                         </form>
                                     </td>
                                 </tr>
@@ -253,16 +295,16 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <ol id = "foodList">
+                                        <ol>
                                             <?php
                                                 for ($i = 0; $i < count($consumedFood); ++$i){
-                                                    echo "<li>$consumedFood[$i]</li>";
+                                                    echo "<li class = 'foodList'>$consumedFood[$i]</li>";
                                                 }
                                             ?>
                                         </ol>
                                         <form action = "profile-client.php" method = "post">
                                             <input type = "text" name = "addFd" id = "addedFood" style = "width: 150px; height: 30px;">
-                                            <input id = "addFood" type = "submit" value = "Add Food" onclick = "addFood()">
+                                            <input id = "addFood" type = "submit" value = "Add Food">
                                         </form>
                                     </td>
                                 </tr>
@@ -285,16 +327,16 @@
                 </tr>
                 <tr align = "center">
                     <td>
-                        <ul id = "friendlist">
+                        <ul>
                         <?php
                             for ($i = 0; $i < count($friends); ++$i){
-                                echo "<li>$friends[$i]</li>";
+                                echo "<li class = 'friendList'>$friends[$i]</li>";
                             }
                         ?>
                         </ul>
                         <form action = "profile-client.php" method = "post">
                             <input type = "text" name = "addFr" id = "addedFriends" style = "width: 150px; height: 30px;">
-                            <input id = "addFriends" type = "submit" value = "Add Friend" onclick = "addFriends()">
+                            <input id = "addFriends" type = "submit" value = "Add Friend">
                         </form>
                     </td>
                 </tr>
@@ -370,34 +412,33 @@
 
             const previous = document.getElementById("consumedChart");
 
-            function addExercise(){
-                const exerciseButton = document.getElementById("addExercise");
-                let addition = document.getElementById("addedEx");
-                const exerciseList = document.getElementById("exerciseList");
-                if (addition.value == "") return;
-                let list = document.createElement("li");
-                list.innerHTML = addition.value;
-                exerciseList.appendChild(list);
-            }
+            const exerciseList = document.getElementsByClassName("exerciseList");
+            addDelete(exerciseList, "ex");
+            const foodList = document.getElementsByClassName("foodList");
+            addDelete(foodList, "fd");
+            const friendList = document.getElementsByClassName("friendList");
+            addDelete(friendList, "fr");
 
-            function addFood(){
-                const foodButton = document.getElementById("addFood");
-                let addition = document.getElementById("addedFood");
-                const foodList = document.getElementById("foodList");
-                if (addition.value == "") return;
-                let list = document.createElement("li");
-                list.innerHTML = addition.value;
-                foodList.appendChild(list);
-            }
-
-            function addFriends(){
-                const friendButton = document.getElementById("addFriends");
-                let addition = document.getElementById("addedFriends");
-                const friendlist = document.getElementById("friendlist");
-                if (addition.value == "") return;
-                let list = document.createElement("li");
-                list.innerHTML = addition.value;
-                friendlist.appendChild(list);
+            function addDelete(list, where){
+                for (let i = 0; i < list.length; ++i){
+                    let del = document.createElement('button');
+                    list[i].appendChild(del);
+                    del.innerText = "X";
+                    del.style.float = "right";
+                    del.style.color = "white";
+                    del.style.fontSize = "10px";
+                    del.style.fontWeight = "bold";
+                    del.style.border = "none";
+                    del.style.borderRadius = "5px";
+                    del.style.backgroundColor = "rgb(41, 52, 130)";
+                    del.style.padding = "5px";
+                    del.addEventListener("click", function deleteList(e){
+                        let deleted = e.target.parentElement;
+                        if (where === "ex") location.replace(`profile-client.php?deletedEx=${i}`);
+                        else if (where === "fd") location.replace(`profile-client.php?deletedFd=${i}`);
+                        else if (where === "fr") location.replace(`profile-client.php?deletedFr=${i}`);
+                    });
+                }
             }
         </script>
     </body>

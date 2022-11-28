@@ -294,7 +294,7 @@
                         </ul>
                         <form action = "profile-client.php" method = "post">
                             <input type = "text" name = "addFr" id = "addedFriends" style = "width: 150px; height: 30px;">
-                            <input id = "addFriends" type = "submit" value = "Add Food" onclick = "addFriends()">
+                            <input id = "addFriends" type = "submit" value = "Add Friend" onclick = "addFriends()">
                         </form>
                     </td>
                 </tr>

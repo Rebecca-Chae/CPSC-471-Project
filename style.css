@@ -202,12 +202,50 @@ ol li{
     background-color: rgb(144, 193, 243);
 }
 
-#addedEx, #addedFood, #addedFriends{
+input{
     padding-left: 10px;
     border: 0;
     outline: none;
     border-radius: 15px;
     background-color: rgb(220, 225, 230);
+}
+
+#edit{
+    float: right;
+    margin-top: 15px;   margin-bottom: 15px;
+    padding: 10px;
+    font-size: 15px;    font-weight: bold;
+    border: 0;
+    border-radius: 10px;
+    width: 80px;
+    background-color: rgb(153, 204, 255);
+    box-shadow: 0px 3px rgb(98, 146, 194);
+}
+
+#title{
+    margin: 30px;
+    margin-top: 15px;   margin-bottom: 15px;
+    font-size: 20px;
+    border-bottom: 3px solid rgb(87, 89, 105);
+}
+
+#userInfo{
+    display: flex;
+    justify-content: center;
+    margin-left: 30px;  margin-right: 30px;
+    border-bottom: 3px solid rgb(87, 89, 105);
+}
+
+label{
+    display: block;
+    padding: 5px;
+}
+
+label span{
+    float: left;
+    text-align: right;
+    width: 120px;
+    padding: 5px;
 }
 
 /* Footer */

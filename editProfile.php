@@ -7,15 +7,27 @@
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
-    $result = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username =" .$username);
-    $row = mysqli_fetch_array($result);
+    // Get the username from the profile page
+    $username = $_POST['username'];
 
-    $username = $row['Username'];
-    $date = $row['Date'];
-    $weight = $row["Weight"];
-    $waist = $row["Waist"];
-    $chest = $row["Chest"];
-    $hips = $row["Hips"];
+    $row = mysqli_query($connection, "SELECT * FROM User WHERE Username = '".$username."'");
+    if ($update = mysqli_fetch_array($row)) $password = $update['Password'];
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($newName = $_POST['newName']) {
+            $sql = "UPDATE User SET Username = '".$newName."' AND Password = '".$password."' WHERE Username = '".$username."'";
+            $result = mysqli_query($connection, $sql);
+            if ($result == false) echo "noooooooooo";
+            else echo "succeed";
+            $username = $newName;
+        }
+        // $password = $_POST['password'];
+        // $date = $_POST['date'];
+        // $weight = $_POST["weight"];
+        // $waist = $_POST["waist"];
+        // $chest = $_POST["chest"];
+        // $hips = $_POST["hips"];
+    }
 
     mysqli_close($connection);
 ?>
@@ -36,19 +48,38 @@
                 ?>
             </div>
             <div id = "option" style = "float: right;">
-                <button id = "b1"><a href = "profile-client.php">Go Back</button>
+                <form action = "profile-client.php" method = "post">
+                    <input type = "hidden" name = "username" value = <?php echo $newName;?>>
+                    <input id = "b1" type = "submit" value = "Go Back">
+                </form>
             </div>
         </header>
-        <div>
-            <div id = "title">Client's Information</div>
-            <form method = "post">
-                Username: <input type = "text" name = "Username" value = '<?php echo $row['username'];?>'><br>
-                Password: <input type = "text" name = "Password" value = '<?php echo $row['password'];?>'><br>
-                Measured Date: <input type = "text" name = "date" value = '<?php echo $row['date'];?>'><br>
-                Weight: <input type = "text" name = "weight" value = '<?php echo $row['weight'];?>'><br>
-                Chest: <input type = "text" name = "chest" value = '<?php echo $row['chest'];?>'><br>
-                Hips: <input type = "text" name = "hips" value = '<?php echo $row['hips'];?>'><br>
-                <input type = "submit" value = "Edit">
+        <div id = "title">User's Information</div>
+        <div id = "userInfo">
+            <form action = "editProfile.php" method = "post">
+                <label>
+                    <span>Username:</span><input type = "text" name = "newName" style = "width: 150px; height: 30px;">
+                </label>
+                <input type = "hidden" name = "username" value = <?php echo $username;?>>
+                <label>
+                    <span>Password:</span><input type = "text" name = "password" style = "width: 150px; height: 30px;">
+                </label>
+                <label>
+                    <span>Measured Date:</span><input type = "text" name = "date" style = "width: 150px; height: 30px;">
+                </label>
+                <label>
+                    <span>Weight:</span><input type = "text" name = "weight" style = "width: 150px; height: 30px;">
+                </label>
+                <label>
+                    <span>Waist:</span><input type = "text" name = "waist" style = "width: 150px; height: 30px;">
+                </label>
+                <label>
+                    <span>Chest:</span><input type = "text" name = "chest" style = "width: 150px; height: 30px;">
+                </label>
+                <label>
+                    <span>Hips:</span><input type = "text" name = "hips" style = "width: 150px; height: 30px;">
+                </label>
+                <input id = "edit" type = "submit" value = "Edit">
             </form>
         </div>
         <footer>

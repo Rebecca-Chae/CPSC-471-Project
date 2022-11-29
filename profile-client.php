@@ -8,8 +8,7 @@
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
     // Get the username from the log-in page
-    // I hard-coded it for now, I need to check if it is linked to the login page
-    $username = $_POST['Username'];
+    $username = $_POST['username'];
     $username = "JennySmith123";
 
     // Get the body measurements
@@ -207,13 +206,18 @@
                 ?>
             </div>
             <div id = "option" style = "float: right;">
-                <button id = "b1"><a href = "editProfile.php?mode=update" method = "get">Edit Profile</button>
-                <button id = "b2"><a href = "logOut.php">Log Out</a></button>
+                <form action = "editProfile.php" method = "post">
+                    <input type = "hidden" name = "username" value = <?php echo $username;?>>
+                    <input id = "b1" type = "submit" value = "Edit Profile">
+                </form>
+                <form action = "logOut.php" method = "post">
+                    <input id = "b2" type = "submit" value = "Log Out">
+                </form>
             </div>
         </header>
         <div id = "upcoming">
             <p>
-                Your next Scheduled Appointment is on <?php echo $appointmentDate ?> at
+                Your next Scheduled Appointment is on <?php echo $appointmentDate; ?> at
                 <?php
                     if ($appointmentTime < 12) echo $appointmentTime." A.M.";
                     else if ($appointmentTime == 12) echo $appointmentTime." P.M.";
@@ -226,11 +230,11 @@
         </div>
         <div id = "measurement">
             <ul>
-                <li id = "date">Measured on : <?php echo $date ?></li>
-                <li id = "weight">Weight : <?php echo $weight ?></li>
-                <li id = "waist">Waist : <?php echo $waist ?></li>
-                <li id = "chest">Chest : <?php echo $chest ?></li>
-                <li id = "hips">Hips : <?php echo $hips ?></li>
+                <li id = "date">Measured on : <?php echo $date; ?></li>
+                <li id = "weight">Weight : <?php echo $weight; ?></li>
+                <li id = "waist">Waist : <?php echo $waist; ?></li>
+                <li id = "chest">Chest : <?php echo $chest; ?></li>
+                <li id = "hips">Hips : <?php echo $hips; ?></li>
             </ul>
         </div>
         <div id = "section1">
@@ -360,9 +364,6 @@
                 </tr>
             </table>
         </div>
-        <div id = "previous" class = "popup" style = "display:none;">
-            
-        </div>
         <footer>
             Copyright 2022. Fitness Tracker All rights reserved.
         </footer>
@@ -392,7 +393,7 @@
             for (let i = 0; i < week.length; ++i){
                 for (let j = 0; j < 7; ++j){
                     if (j == 3) week[i].innerHTML += `<li>Today</li>`;
-                    else week[i].innerHTML += `<li><a href = "#previous">${month}.${threeDaysAgo + j}.${year}</a></li>`;
+                    else week[i].innerHTML += `<li>${month}.${threeDaysAgo + j}.${year}</li>`;
                 }
             }
 
@@ -409,8 +410,6 @@
             let todayConsumed = "<?php echo $calories_Earned;?>";
             percentage = (todayConsumed / totalCalorie) * 100;
             consumed.style.background = `conic-gradient(#009966 ${percentage}%, rgb(220, 225, 230) ${percentage}%)`;
-
-            const previous = document.getElementById("consumedChart");
 
             const exerciseList = document.getElementsByClassName("exerciseList");
             addDelete(exerciseList, "ex");

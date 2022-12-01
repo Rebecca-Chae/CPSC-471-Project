@@ -7,26 +7,27 @@
     // . 접합. 변수끼리 + 하는 거랑 같음
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
-    // Get the username from the profile page
-    $username = $_POST['username'];
-
-    $row = mysqli_query($connection, "SELECT * FROM User WHERE Username = '".$username."'");
-    if ($update = mysqli_fetch_array($row)) $password = $update['Password'];
+    // Get the username from the profile page/refresh
+    if (isset($_GET['user'])) $username = $_GET['user'];
+    else $username = $_POST['username'];
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-        if ($newName = $_POST['newName']) {
-            $sql = "UPDATE User SET Username = '".$newName."' AND Password = '".$password."' WHERE Username = '".$username."'";
+        $date = $_POST['date'];
+        $weight = $_POST['weight'];
+        $waist = $_POST['waist'];
+        $chest = $_POST['chest'];
+        $hips = $_POST['hips'];
+
+        if (isset($date) && isset($weight) && isset($waist) && isset($chest) && isset($hips)){
+            $sql = "UPDATE Body_Measurement
+                    SET Date = '{$date}',
+                        Weight = {$weight},
+                        Waist = {$waist},
+                        Chest = {$chest},
+                        Hips = {$hips}
+                    WHERE Username = '{$username}'";
             $result = mysqli_query($connection, $sql);
-            if ($result == false) echo "noooooooooo";
-            else echo "succeed";
-            $username = $newName;
         }
-        // $password = $_POST['password'];
-        // $date = $_POST['date'];
-        // $weight = $_POST["weight"];
-        // $waist = $_POST["waist"];
-        // $chest = $_POST["chest"];
-        // $hips = $_POST["hips"];
     }
 
     mysqli_close($connection);
@@ -43,9 +44,7 @@
     <body>
         <header>
             <div id = "username">
-                <?php
-                    echo $username;
-                ?>
+                Fitness Tracker
             </div>
             <div id = "option" style = "float: right;">
                 <form action = "profile-client.php" method = "post">
@@ -54,30 +53,24 @@
                 </form>
             </div>
         </header>
-        <div id = "title">User's Information</div>
+        <div id = "title"><?php echo $username;?>'s Information</div>
         <div id = "userInfo">
             <form action = "editProfile.php" method = "post">
-                <label>
-                    <span>Username:</span><input type = "text" name = "newName" style = "width: 150px; height: 30px;">
-                </label>
                 <input type = "hidden" name = "username" value = <?php echo $username;?>>
                 <label>
-                    <span>Password:</span><input type = "text" name = "password" style = "width: 150px; height: 30px;">
+                    <span>Measured Date:</span><input type = "date" name = "date" style = "width: 150px; height: 30px;" required>
                 </label>
                 <label>
-                    <span>Measured Date:</span><input type = "text" name = "date" style = "width: 150px; height: 30px;">
+                    <span>Weight:</span><input type = "number" step = "0.1" name = "weight" style = "width: 150px; height: 30px;" required>
                 </label>
                 <label>
-                    <span>Weight:</span><input type = "text" name = "weight" style = "width: 150px; height: 30px;">
+                    <span>Waist:</span><input type = "number" step = "0.1" name = "waist" style = "width: 150px; height: 30px;" required>
                 </label>
                 <label>
-                    <span>Waist:</span><input type = "text" name = "waist" style = "width: 150px; height: 30px;">
+                    <span>Chest:</span><input type = "number" step = "0.1" name = "chest" style = "width: 150px; height: 30px;" required>
                 </label>
                 <label>
-                    <span>Chest:</span><input type = "text" name = "chest" style = "width: 150px; height: 30px;">
-                </label>
-                <label>
-                    <span>Hips:</span><input type = "text" name = "hips" style = "width: 150px; height: 30px;">
+                    <span>Hips:</span><input type = "number" step = "0.1" name = "hips" style = "width: 150px; height: 30px;" required>
                 </label>
                 <input id = "edit" type = "submit" value = "Edit">
             </form>

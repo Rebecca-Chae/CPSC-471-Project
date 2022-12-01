@@ -8,8 +8,7 @@
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
     // Get the username from the log-in page
-    $username = $_POST['username'];
-    $username = "JennySmith123";
+    if (!($username = $_POST['username'])) $username = "JennySmith123";
 
     // Get the body measurements
     $row = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username = '".$username."'");
@@ -271,10 +270,23 @@
                             </table>
                         </div>
                     </td>
-                    <td align = center rowspan = "2">
+                    <td align = center>
                         <div id = "caloriesBurned">
                             <div id = burnedChart></div>
                             <div id = burnedTitle>Calories Burned Today</div>
+                        </div>
+                    </td>
+                    <td align = center>
+                        <br><br>
+                        <div id = 'allEx'>
+                            <H3 id = "workout">• Workout Routine •</H3>
+                            <ol>
+                                <?php
+                                    for ($i = 0; $i < count($allExercise); ++$i){
+                                        echo "<li>$allExercise[$i]</li>";
+                                    }
+                                ?>
+                            </ol>
                         </div>
                     </td>
                 </tr>
@@ -319,6 +331,19 @@
                         <div id = "caloriesConsumed">
                             <div id = consumedChart></div>
                             <div id = consumedTitle>Calories Consumed Today</div>
+                        </div>
+                    </td>
+                    <td align = center>
+                        <br><br>
+                        <div id = 'allFd'>
+                            <H3 id = "mealPlan">• Meal Plan •</H3>
+                            <ol>
+                                <?php
+                                    for ($i = 0; $i < count($allFood); ++$i){
+                                        echo "<li>$allFood[$i]</li>";
+                                    }
+                                ?>
+                            </ol>
                         </div>
                     </td>
                 </tr>

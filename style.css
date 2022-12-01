@@ -70,8 +70,13 @@ ul li{
     background-color: white;
 }
 
-#completedExercise, #consumedFood, #caloriesBurned, #caloriesConsumed{
+#completedExercise, #consumedFood{
     margin-left: 30px;
+}
+
+#caloriesBurned, #caloriesConsumed{
+    margin-left: 30px;
+    width: 200px;
 }
 
 H3{    
@@ -85,7 +90,7 @@ H3{
     border-collapse : collapse;
 }
 
-.day, #sevenDays{
+.day, #sevenDays, #workout, #mealPlan{
     font-weight: bold;
     color: rgb(41, 52, 130);
 }
@@ -145,6 +150,13 @@ ol li{
 
 #addExercise:hover, #addFood:hover{
     background-color: rgb(144, 193, 243);
+}
+
+#allEx, #allFd{
+    margin-left: 30px;
+    border: 3px solid rgb(87, 89, 105);
+    padding: 15px;
+    width: 200px;
 }
 
 /* Section 3 & 4 */
@@ -208,6 +220,10 @@ input{
     outline: none;
     border-radius: 15px;
     background-color: rgb(220, 225, 230);
+}
+
+label input{
+    padding-right: 10px;
 }
 
 #edit{

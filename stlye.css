@@ -1,10 +1,11 @@
 .cal{
+    float:left;
     width:55vw;
     height:50vh;
-    background-color: rgb(144, 193, 243);
-    display: c;
+    background-color: white;
 }
 .month{
+    float:left;
     width:55vw;
     height:20%;
     background-color: rgb(101, 175, 248);
@@ -51,14 +52,109 @@
     flex-wrap: wrap;
     padding-left: 2rem;
 }
+
+.day div:active{
+    background-color: aliceblue;
+}
 .day div:hover{
     border: 0.01rem solid blue;
     transition: 0.2s;
 }
+
 .day div {
     padding: 0.5rem;
     width : calc(80vh / 7);
     height: 2rem;
     cursor:pointer;
 }
+.appoints {
+    display:inline-block;
+    width: 15vw;
+    height: 50vh;
+    background-color: rgb(242, 249, 255);
+}
+.header {
+    display:flex;
+    width: 15vw;
+    float:right;
+    height : 20%;
+    background-color: rgb(140, 220, 255);
+}
+.header h3{
+    float: center;
+    color: white;
+    justify-content: center;
+    align-content: center;
+    padding-left: 3rem;
+}
 
+.bookings {
+    float: left;
+    overflow-wrap:break-word;
+}
+
+.recRoutine ul{
+    list-style: none;
+}
+.recRoutine ul{
+    font-size: large;
+    width: 20vw;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border: 2.5px solid rgb(87, 89, 105);
+}
+
+#clients table, #clients tr, #clients td {
+    padding: 10px;
+    border : 2.5px solid rgb(87, 89, 105);
+    border-top: none;
+    border-collapse : collapse;
+    
+}
+#clients th{
+    padding: 10px;
+    border : 2.5px solid rgb(87, 89, 105);
+    border-collapse : collapse;
+}
+
+.feedback{
+    background-color: white;
+    box-shadow: 0px 3px rgb(204, 207, 210);
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 0;
+    border-radius: 10rem;
+    width: 10rem;
+    cursor: pointer;
+}
+
+.det summary{
+    cursor: pointer;
+}
+
+#addFbButton, #addExerciseButton{
+    background-color: white;
+    box-shadow: 0px 3px rgb(204, 207, 210);
+    padding: 0.2rem;
+    font-size: 0.7rem;
+    border: 0;
+    border-radius: 10rem;
+    width: 7rem;
+    cursor: pointer;
+}
+
+#addFb, #addRecEx{
+    border-radius: 10rem;
+    padding: 0.2rem;
+}
+
+#back {
+    background-color: rgb(112, 196, 252);
+    box-shadow: 0px 3px rgb(204, 207, 210);
+    padding: 0.2rem;
+    font-size: 0.7rem;
+    border: 0;
+    border-radius: 10rem;
+    width: 7rem;
+    cursor: pointer;
+}

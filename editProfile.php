@@ -11,6 +11,13 @@
     if (isset($_GET['user'])) $username = $_GET['user'];
     else $username = $_POST['username'];
 
+    $row = mysqli_query($connection, "SELECT * FROM Client where Username = '".$username."'");
+    if (mysqli_fetch_array($row)) $page = "profile-client.php";
+    else {
+        $row = mysqli_query($connection, "SELECT * FROM Professional where Username = '".$username."'");
+        if (mysqli_fetch_array($row)) $page = "profile-professional.php";
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $date = $_POST['date'];
         $weight = $_POST['weight'];
@@ -36,7 +43,7 @@
 <!DOCTYPE html>
 <html lang = "en-US">
     <head>
-        <link href = "./style.css?ver=1" rel = "stylesheet"> <!-- We can put an externally made css file in here -->
+        <link href = "./style.css?ver=1" rel = "stylesheet">
         <meta charset = "utf-8">
         <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
         <title>Fitness Tracker</title>
@@ -47,7 +54,7 @@
                 Fitness Tracker
             </div>
             <div id = "option" style = "float: right;">
-                <form action = "profile-client.php" method = "post">
+                <form action = <?php echo $page;?> method = "post">
                     <input type = "hidden" name = "username" value = <?php echo $newName;?>>
                     <input id = "b1" type = "submit" value = "Go Back">
                 </form>

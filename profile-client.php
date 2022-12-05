@@ -53,7 +53,7 @@
         }
 
         if ($newFriend = $_POST['addFr']){
-            $row = mysqli_query($connection, "SELECT * FROM User where Username = '".$newFriend."'");
+            $row = mysqli_query($connection, "SELECT * FROM Client where Username = '".$newFriend."'");
             if (mysqli_fetch_array($row)){
                 $sql = "INSERT INTO Friends_With (Friends_Username, Client_Username) VALUES ('".$newFriend."','".$username."')";
                 mysqli_query($connection, $sql);

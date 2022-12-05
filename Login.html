@@ -17,9 +17,21 @@
             <label for="username">Username: </label>
             <input type="text" id="username" name="username" placeholder="Type in your username here" size = 26><br><br>
             <label for="password">Password: </label>
-            <input type="text" id="password" name="password" placeholder="Type in your password here" size = 26><br><br>
-            <input type="submit" value="Log in">
-            </form>
+            <input type="password" id="password" name="password" placeholder="Type in your password here" size = 26><br><br>
+            <input type="submit" id = "submitbutton" value="Log in">
+        </form>
         <button type="button">Create account</button>
+    
+        <script>
+            function validatelogin()
+                {
+                    var user = document.f1.username.value;
+                    var pass = document.f1.password.value;
+                    if (user.length == "" || pass.length == "") {
+                        alert("Username and password cannot be empty");
+                        return false;
+                    }
+                }
+        </script>
     </body>
 </html>

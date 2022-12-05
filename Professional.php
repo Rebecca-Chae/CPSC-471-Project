@@ -8,6 +8,11 @@ if ($connection->connect_error)
   }
   // for test
   $username = TomTrainer2022;
+  if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if(isset($_POST['Professional'])){
+      $username = $_POST['Professional'];
+    }
+  }
   function getTimeEnd($t) {
     if($t < 12) {
       return $t . " A.M";
@@ -115,13 +120,13 @@ if ($connection->connect_error)
           </div>
           <div class = "week">
             <ul>
+              <li> Sun </li>
               <li> Mon </li>
               <li> Tue </li>
               <li> Wed </li>
               <li> Thu </li>
               <li> Fri </li>
               <li> Sat </li>
-              <li> Sun </li>
             </ul>
           </div>
           <div class = "day">
@@ -137,11 +142,11 @@ if ($connection->connect_error)
           document.getElementById("bookings").innerHTML = <?php 
               echo json_encode($return);?>;
           const dayClass = document.getElementsByClassName("day")[0];
-          const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+          const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
           const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
           function write(dayInMon, start){
             let toWrite = "";
-            for (let i = 1; i <= start; i++){
+            for (let i = 0; i < start; i++){
               toWrite += `<div class = 'donthover'></div>`
             }
             for (let i = 1; i <= dayInMon; i++){
@@ -184,17 +189,24 @@ if ($connection->connect_error)
           }
           document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
           let dayInM = new Date(year, month + 1, 0).getDate();
-          let skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
-          let selected = <?php echo json_encode($_COOKIE['sel']); ?>;
+          let skipDate = new Date(year + "-" + MONTHS[month] +"-01").getDay();
           write(dayInM, skipDate);
+          let selected = <?php echo json_encode($_COOKIE['sel']); ?>;
           if(selected > 0){
             document.getElementById(selected).style.backgroundColor = "aliceblue";
+          }
+          function checkIfCurrent(year, month){
+            cd = new Date();
+            if(month == cd.getMonth() && year == cd.getFullYear()){
+              document.getElementById(cd.getDate()).style.backgroundColor = "blue";
+            }
           }
           function clearPrev(){
             if(selected > 0){
               document.getElementById(selected).style.backgroundColor = "white";
             }
           }
+          checkIfCurrent(year, month);
           document.getElementsByClassName("previous")[0].addEventListener('click', function(){
             month--;
             if(month == -1){
@@ -203,8 +215,9 @@ if ($connection->connect_error)
             }
             document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
             dayInM = new Date(year, month + 1, 0).getDate();
-            skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
+            skipDate = new Date(year + "-" + MONTHS[month] +"-01").getDay();
             write(dayInM, skipDate);
+            checkIfCurrent(year, month);
             clearPrev();
           });
           document.getElementsByClassName("next")[0].addEventListener('click', function(){
@@ -217,6 +230,7 @@ if ($connection->connect_error)
             dayInM = new Date(year, month + 1, 0).getDate();
             skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
             write(dayInM, skipDate);
+            checkIfCurrent(year, month);
             clearPrev();
           });
 

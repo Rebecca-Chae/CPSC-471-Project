@@ -12,6 +12,13 @@ if ($connection->connect_error)
     if(isset($_POST['Professional'])){
       $username = $_POST['Professional'];
     }
+    if(isset($_POST['addAppoint'])){
+      if(isset($_GET['Cdate'])){
+        $avail = $_POST['addAppoint']. ":00";
+        $q = "INSERT INTO `Professional’s_times_available` (Username, Date, Time) VALUES ('".$username."', '".$_GET['Cdate']."','".$avail."')";
+        $a = mysqli_query($connection, $q);
+      }
+    }
   }
   function getTimeEnd($t) {
     if($t < 12) {
@@ -68,11 +75,6 @@ if ($connection->connect_error)
         <title>Fitness Tracker</title>
     </head>
     <body>
-      <style>
-            table, th, td {
-              border: 1px solid black;
-            }
-          </style>
         <div id = "username">
           <h1><?php echo $username ?></h1>
         </div> 
@@ -137,6 +139,13 @@ if ($connection->connect_error)
           <div class = "header"><h3>Appointments</h3></div>
           <div id = "bookings"></div>
         </div>
+        <div id = "addAppointment"> 
+          add time available on selected day:
+          <form method = "post">
+                <input type = "time" name = "addAppoint" id = "addRecAppoint" style = "width: 7vw; height: 1.2rem;">
+                <input id = "addExerciseButton" type = "submit" value = "Add Time available">
+            </form>
+        </div>
         <script type = "text/javascript">
           
           document.getElementById("bookings").innerHTML = <?php 
@@ -198,7 +207,7 @@ if ($connection->connect_error)
           function checkIfCurrent(year, month){
             cd = new Date();
             if(month == cd.getMonth() && year == cd.getFullYear()){
-              document.getElementById(cd.getDate()).style.backgroundColor = "blue";
+              document.getElementById(cd.getDate()).style.backgroundColor = "rgb(0, 227, 251)";
             }
           }
           function clearPrev(){

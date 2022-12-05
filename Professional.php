@@ -1,3 +1,4 @@
+<!-- Author: Haider Tawfik-->
 <?php
 $connection = mysqli_connect("localhost", "root", "", "fitnessTracker");
 if ($connection->connect_error)
@@ -31,14 +32,6 @@ if ($connection->connect_error)
     $row = mysqli_fetch_array($b_measure);
     $clients_meas[$i] = "Date: ".  $row['Date'] . "<br /> Weight: ". $row ['Weight'] . "lb <br />Hips: ". $row['Hips'] . "cm <br />Hips: ". $row['Waist'] ."cm <br />Chest: ". $row['Chest'] . "cm";
   }
-  echo $client_meas[0];
-  echo "Returned rows are: " . $clients -> num_rows;
-  $test = "2022-11-22";
-  $q = "SELECT * FROM Appointments WHERE Professional_username = '".$username."' AND Date = '".$test."'";
-  $a = mysqli_query($connection, $q);
-  echo "rows" . $a -> num_rows;
-    // Free result set
-  //$test -> free_result();
   if(isset($_GET['Cdate'])){
     $cdate = $_GET['Cdate'];
     $q = "SELECT * FROM Appointments WHERE Professional_username = '".$username."' AND Date = '".$cdate."' Order By Date, Time";
@@ -133,37 +126,6 @@ if ($connection->connect_error)
           </div>
           <div class = "day">
             <br>
-            <div id = 1></div>
-            <div id = 2></div>
-            <div id = 3></div>
-            <div id = 4></div>
-            <div id = 5></div>
-            <div id = 6></div>
-            <div id = 7></div>
-            <div id = 8></div>
-            <div id = 9></div>
-            <div id = 10></div>
-            <div id = 11></div>
-            <div id = 12></div>
-            <div id = 13></div>
-            <div id = 14></div>
-            <div id = 15></div>
-            <div id = 16></div>
-            <div id = 17></div>
-            <div id = 18></div>
-            <div id = 19></div>
-            <div id = 20></div>
-            <div id = 21></div>
-            <div id = 22></div>
-            <div id = 23></div>
-            <div id = 24></div>
-            <div id = 25></div>
-            <div id = 26></div>
-            <div id = 27></div>
-            <div id = 28></div>
-            <div id = 29></div>
-            <div id = 30></div>
-            <div id = 31></div>
           </div>
         </div>
         <div class = "appoints">
@@ -174,31 +136,38 @@ if ($connection->connect_error)
           
           document.getElementById("bookings").innerHTML = <?php 
               echo json_encode($return);?>;
-          let selected = <?php echo json_encode($_COOKIE['sel']); ?>;
-          if(selected > 0){
-            document.getElementById(selected).style.backgroundColor = "aliceblue";
-          }
-          function clearPrev(){
-            if(selected > 0){
-              document.getElementById(selected).style.backgroundColor = "white";
+          const dayClass = document.getElementsByClassName("day")[0];
+          const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+          const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+          function write(dayInMon, start){
+            let toWrite = "";
+            for (let i = 1; i <= start; i++){
+              toWrite += `<div class = 'donthover'></div>`
             }
+            for (let i = 1; i <= dayInMon; i++){
+              toWrite += `<div id = ${i}> ${i}  </div>`
+              
+            }
+            dayClass.innerHTML = toWrite;
+            for(let i = 1; i <= dayInMon; i++){
+              let curr = document.getElementById(i);
+              curr.addEventListener('click', function onClick(e){
+                curr.style.backgroundColor = "aliceblue";
+                let day = i;
+                document.cookie = 'sel='+day;
+                document.cookie = 'mon='+month;
+                document.cookie = 'year='+year;
+                let cdate = year +"-"+ (month + 1) + "-"+ day;
+                window.location.href = "?Cdate="+cdate;
+            });
           }
-          function test1(i){
-            document.cookie = "index="+i;
-            let client = <?php echo json_encode($clients_arr[$_COOKIE['index']]);?>;
-            let user = <?php echo json_encode($username)?>;
-            document.cookie = "user="+user;
-            document.cookie = "p="+client;
           }
           let client = <?php echo json_encode($clients_arr[$_COOKIE['index']]);?>;
           document.cookie = "p="+client;
-          const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-          const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-          let cd = new Date();
+          var cd = new Date();
           let year = cd.getFullYear();
           let day = cd.getDate();
           let month = cd.getMonth();
-          let previous = document.getElementById(1);
           let pMonth = <?php if (isset($_COOKIE['mon'])){
             echo $_COOKIE['mon']; 
           } else {echo -1;} ?>;
@@ -215,9 +184,17 @@ if ($connection->connect_error)
           }
           document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
           let dayInM = new Date(year, month + 1, 0).getDate();
-          for (let i = 1; i <= dayInM; i++){
-              document.getElementById(i).innerHTML = i;
+          let skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
+          let selected = <?php echo json_encode($_COOKIE['sel']); ?>;
+          write(dayInM, skipDate);
+          if(selected > 0){
+            document.getElementById(selected).style.backgroundColor = "aliceblue";
+          }
+          function clearPrev(){
+            if(selected > 0){
+              document.getElementById(selected).style.backgroundColor = "white";
             }
+          }
           document.getElementsByClassName("previous")[0].addEventListener('click', function(){
             month--;
             if(month == -1){
@@ -226,10 +203,8 @@ if ($connection->connect_error)
             }
             document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
             dayInM = new Date(year, month + 1, 0).getDate();
-            for (let i = 1; i <= 31; i++){
-              document.getElementById(i).innerHTML = i;
-              if(i > dayInM) document.getElementById(i).innerHTML = "";
-            }
+            skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
+            write(dayInM, skipDate);
             clearPrev();
           });
           document.getElementsByClassName("next")[0].addEventListener('click', function(){
@@ -240,26 +215,10 @@ if ($connection->connect_error)
             }
             document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
             dayInM = new Date(year, month + 1, 0).getDate();
-            for (let i = 1; i <= 31; i++){
-              document.getElementById(i).innerHTML = i;
-              if(i > dayInM) document.getElementById(i).innerHTML = "";
-            }
+            skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
+            write(dayInM, skipDate);
             clearPrev();
           });
-          for(let i = 1; i <= 31; i++){
-            let curr = document.getElementById(i);
-            curr.addEventListener('click', function onClick(e){
-              curr.style.backgroundColor = "aliceblue";
-              previous.style.backgroundColor = "white";
-              let day = i;
-              document.cookie = 'sel='+day;
-              document.cookie = 'mon='+month;
-              document.cookie = 'year='+year;
-              previous = curr;
-              let cdate = year +"-"+ (month + 1) + "-"+ day;
-              window.location.href = "?Cdate="+cdate;
-          });
-          }
 
           //todo: add changing dates to correct position dynamically if time permits if not remove weekdays
         </script>

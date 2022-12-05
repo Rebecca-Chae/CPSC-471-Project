@@ -59,13 +59,18 @@
 .day div:hover{
     border: 0.01rem solid blue;
     transition: 0.2s;
+    cursor: pointer;
+}
+
+.day .donthover:hover{
+    border: 0.0rem white;
+    cursor: default;
 }
 
 .day div {
     padding: 0.5rem;
     width : calc(80vh / 7);
     height: 2rem;
-    cursor:pointer;
 }
 .appoints {
     display:inline-block;

@@ -7,6 +7,19 @@
     // Get the username from the log-in page
     if (!($username = $_POST['username'])) $username = "TomTrainer2022";
 
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      if(isset($_POST['Professional'])){
+        $username = $_POST['Professional'];
+      }
+      if(isset($_POST['addAppoint'])){
+        if(isset($_GET['Cdate'])){
+          $avail = $_POST['addAppoint']. ":00";
+          $q = "INSERT INTO `Professional’s_times_available` (Username, Date, Time) VALUES ('".$username."', '".$_GET['Cdate']."','".$avail."')";
+          $a = mysqli_query($connection, $q);
+        }
+      }
+    }
+
     function getTimeEnd($t) {
         if($t < 12) return $t . " A.M";
         else if($t == 12) return $t . " P.M";
@@ -105,215 +118,138 @@
           </tr>
         </table>
       </div>
-      <table id = "cal" align = "center">
-        <thead>
-          <tr>
-            <td align = "center" id = "previous" onclick = "previous()"> < </td>
-            <td align = "center" id = "month" colspan = "5"></td>
-            <td align = "center" id = "next" onclick = "next()"> > </td>
-          </tr>
-          <tr>
-            <td id = "sun" align = "center">Sun</td>
-            <td align = "center">Mon</td>
-            <td align = "center">Tue</td>
-            <td align = "center">Wed</td>
-            <td align = "center">Thu</td>
-            <td align = "center">Fri</td>
-            <td id = "sat" align = "center">Sat</td>
-          </tr>
-          <tr class = "appoints"><h3>Appointments</h3></tr>
-        </thead>
-        <tbody id = "calendarDays"></tbody>
-      </table>
+      <div class = "cal">
+        <div class = "month">
+          <ul>
+            <li class = "previous"> < </li>
+            <li id = cm></li>
+            <li class = "next"> > </li>
+          </ul>
+        </div>
+        <div class = "week">
+          <ul>
+            <li> Sun </li>
+            <li> Mon </li>
+            <li> Tue </li>
+            <li> Wed </li>
+            <li> Thu </li>
+            <li> Fri </li>
+            <li> Sat </li>
+          </ul>
+        </div>
+        <div id = "day">
+          <br>
+        </div>
+      </div>
       <div class = "appoints">
-        <h3>Appointments</h3>
-        <div id = "bookings"></div>
+          <div class = "header"><h3>• Appointments</h3></div>
+          <div id = "bookings"></div>
+        </div>
+      <div id = "addAppointment">
+        Add time available on selected day:
+        <form method = "post">
+            <input type = "time" name = "addAppoint" id = "addRecAppoint" style = "width: 100px; height: 35px;">
+            <input id = "addExerciseButton" type = "submit" value = "Add Time available">
+        </form>
       </div>
       <footer>
             Copyright 2022. Fitness Tracker All rights reserved.
       </footer>
       <script type = "text/javascript">
-          // document.getElementById("bookings").innerHTML = <?php echo json_encode($return);?>;
-          // let selected = <?php echo json_encode($_COOKIE['sel']); ?>;
-          // if (selected > 0){
-          //     document.getElementById(selected).style.backgroundColor = "aliceblue";
-          // }
-
-          // function clearPrev(){
-          //     if(selected > 0){
-          //         document.getElementById(selected).style.backgroundColor = "white";
-          //     }
-          // }
-          
-          // function test1(i){
-          //     document.cookie = "index="+i;
-          //     let client = <?php echo json_encode($clients_arr[$_COOKIE['index']]);?>;
-          //     let user = <?php echo json_encode($username)?>;
-          //     document.cookie = "user="+user;
-          //     document.cookie = "p="+client;
-          // }
-          
-          // let client = <?php echo json_encode($clients_arr[$_COOKIE['index']]);?>;
-          // document.cookie = "p="+client;
-          // const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-          // const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-          // let cd = new Date();
-          // let year = cd.getFullYear();
-          // let day = cd.getDate();
-          // let month = cd.getMonth();
-          // let previous = document.getElementById(1);
-          // let pMonth = <?php
-          //                 if (isset($_COOKIE['mon'])) {
-          //                     echo $_COOKIE['mon']; 
-          //                 } else echo -1;
-          //                 ?>;
-          // if (pMonth >= 0) month = pMonth;
-          
-          // let pYear = <?php
-          //                 if (isset($_COOKIE['year'])){
-          //                     echo $_COOKIE['year'];
-          //                 } else echo -1;
-          //                 ?>;
-          // if (pYear >= 0) year = pYear;
-          
-          // document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
-          // let dayInM = new Date(year, month + 1, 0).getDate();
-          
-          // for (let i = 1; i <= dayInM; i++){
-          //     document.getElementById(i).innerHTML = i;
-          // }
-          
-          // document.getElementsByClassName("previous")[0].addEventListener('click', function(){
-          // month--;
-          
-          // if(month == -1){
-          //     month = 11;
-          //     year--;
-          // }
-          
-          // document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
-          // dayInM = new Date(year, month + 1, 0).getDate();
-          
-          // for (let i = 1; i <= 31; i++){
-          //     document.getElementById(i).innerHTML = i;
-          //     if(i > dayInM) document.getElementById(i).innerHTML = "";
-          // }
-          
-          // clearPrev();
-          // });
-
-          // document.getElementsByClassName("next")[0].addEventListener('click', function(){
-          //     month++;
-          //     if(month == 12){
-          //         month = 0;
-          //         year++;
-          //     }
+          document.getElementById("bookings").innerHTML = <?php echo json_encode($return);?>;
+          const dayClass = document.getElementById("day");
+          const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+          const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+          function write(dayInMon, start){
+            let toWrite = "";
+            for (let i = 0; i < start; i++){
+              toWrite += `<div class = 'donthover'></div>`
+            }
+            for (let i = 1; i <= dayInMon; i++){
+              toWrite += `<div id = ${i}> ${i}  </div>`
               
-          //     document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
-          //     dayInM = new Date(year, month + 1, 0).getDate();
-              
-          //     for (let i = 1; i <= 31; i++){
-          //         document.getElementById(i).innerHTML = i;
-          //         if(i > dayInM) document.getElementById(i).innerHTML = "";
-          //     }
-              
-          //     clearPrev();
-          // });
-
-          // for (let i = 1; i <= 31; i++){
-          //     let curr = document.getElementById(i);
-          //     curr.addEventListener('click', function onClick(e){
-          //         curr.style.backgroundColor = "aliceblue";
-          //         previous.style.backgroundColor = "white";
-          //         let day = i;
-          //         document.cookie = 'sel='+day;
-          //         document.cookie = 'mon='+month;
-          //         document.cookie = 'year='+year;
-          //         previous = curr;
-          //         let cdate = year +"-"+ (month + 1) + "-"+ day;
-          //         window.location.href = "?Cdate="+cdate;
-          //     });
-          // }
-        //}
-
-        // Displaying Calendar Citatoin: https://wooder2050.medium.com/바닐라코딩-자바스크립트로-달력-calendar-todo-구현하기-f635ef8cce76
-        let currentMonth = document.getElementById("month");
-        let dates = document.getElementById("calendarDays");
-
-        let today = new Date();
-        let firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-        let days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        let leap = [31, 29, 31,30, 31, 30, 31, 31, 30, 31, 30, 31];
-        let notLeap = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-        currentMonth.innerHTML = months[firstDay.getMonth()] + '&nbsp;' + firstDay.getFullYear();
-
-        let currentYear;
-        if (today.getFullYear() % 4 === 0) currentYear = leapYear;
-        else currentYear = notLeap;
-
-        function calendar(){
-          let date = 1;
-          // Maximum 6 weeks in a month
-          for(let i = 0; i < 6; ++i){
-              let week = document.createElement('tr');
-              week.setAttribute("id", i);
-              // 7 days in a week
-              for (let j = 0; j < 7; ++j){
-                // Skip until the first day of current month || date should be smaller than current month's total num of dates
-                if ((i === 0 && j < firstDay.getDay()) || date > currentYear[firstDay.getMonth()]){
-                  let days = document.createElement("td");
-                  days.style.textAlign = "center";
-                  week.appendChild(days);
-                } else{
-                  let days = document.createElement("td");
-                  days.textContent = date;
-                  days.style.textAlign = "center";
-                  days.setAttribute("id", date);
-                  week.appendChild(days);
-                  date++;
-                }
-              }
-              dates.appendChild(week);
+            }
+            dayClass.innerHTML = toWrite;
+            for(let i = 1; i <= dayInMon; i++){
+              let curr = document.getElementById(i);
+              curr.addEventListener('click', function onClick(e){
+                curr.style.backgroundColor = "aliceblue";
+                let day = i;
+                document.cookie = 'sel='+day;
+                document.cookie = 'mon='+month;
+                document.cookie = 'year='+year;
+                let cdate = year +"-"+ (month + 1) + "-"+ day;
+                window.location.href = "?Cdate="+cdate;
+            });
           }
-        }
-        calendar();
-
-        function previous(){
-          if (firstDay.getMonth() === 1){
-            firstDay = new Date(firstDay.getFullYear() - 1, 12, 1);
-            if (firstDay.getFullYear() % 4 === 0) currentYear = leapYear;
-            else currentYear = notLeap;
-          } else firstDay = new Date(firstDay.getFullYear(), firstDay.getMonth() - 1, 1);
-        
-          today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-          currentMonth.innerHTML = months[firstDay.getMonth()] + '&nbsp;' + firstDay.getFullYear();
-          
-          for (let i = 0; i < 6; ++i){
-            document.getElementById(i).remove();
           }
-          
-          calendar();
-        }
-
-        function next(){
-          if (firstDay.getMonth() === 12){
-            firstDay = new Date(firstDay.getFullYear() + 1, 1, 1);
-            if (firstDay.getFullYear() % 4 === 0) currentYear = leapYear;
-            else currentYear = notLeap;
-          } else firstDay = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 1);
-        
-          today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-          currentMonth.innerHTML = months[firstDay.getMonth()] + '&nbsp;' + firstDay.getFullYear();
-          
-          for (let i = 0; i < 6; ++i){
-            document.getElementById(i).remove();
+          let client = <?php echo json_encode($clients_arr[$_COOKIE['index']]);?>;
+          document.cookie = "p="+client;
+          var cd = new Date();
+          let year = cd.getFullYear();
+          let day = cd.getDate();
+          let month = cd.getMonth();
+          let pMonth = <?php if (isset($_COOKIE['mon'])){
+            echo $_COOKIE['mon']; 
+          } else {echo -1;} ?>;
+          if(pMonth >= 0){
+            month = pMonth;
           }
-          
-          calendar();
-        }
-
+          let pYear = <?php if (isset($_COOKIE['year'])){
+            echo $_COOKIE['year'];
+            } else {
+              echo -1;
+            } ?>;
+          if(pYear >= 0){
+            year = pYear;
+          }
+          document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
+          let dayInM = new Date(year, month + 1, 0).getDate();
+          let skipDate = new Date(year + "-" + MONTHS[month] +"-01").getDay();
+          write(dayInM, skipDate);
+          let selected = <?php echo json_encode($_COOKIE['sel']); ?>;
+          if(selected > 0){
+            document.getElementById(selected).style.backgroundColor = "aliceblue";
+          }
+          function checkIfCurrent(year, month){
+            cd = new Date();
+            if(month == cd.getMonth() && year == cd.getFullYear()){
+              document.getElementById(cd.getDate()).style.color = "white";
+              document.getElementById(cd.getDate()).style.backgroundColor = "rgb(101, 175, 248)";
+            }
+          }
+          function clearPrev(){
+            if(selected > 0){
+              document.getElementById(selected).style.backgroundColor = "white";
+            }
+          }
+          checkIfCurrent(year, month);
+          document.getElementsByClassName("previous")[0].addEventListener('click', function(){
+            month--;
+            if(month == -1){
+              month = 11;
+              year--;
+            }
+            document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
+            dayInM = new Date(year, month + 1, 0).getDate();
+            skipDate = new Date(year + "-" + MONTHS[month] +"-01").getDay();
+            write(dayInM, skipDate);
+            checkIfCurrent(year, month);
+            clearPrev();
+          });
+          document.getElementsByClassName("next")[0].addEventListener('click', function(){
+            month++;
+            if(month == 12){
+              month = 0;
+              year++;
+            }
+            document.getElementById("cm").innerHTML = MONTHS[month] + " " + year;
+            dayInM = new Date(year, month + 1, 0).getDate();
+            skipDate = new Date(year + "-" + (month + 1) +"-01").getDay();
+            write(dayInM, skipDate);
+            checkIfCurrent(year, month);
+            clearPrev();
+          });
       </script>
     </body>
 </html>

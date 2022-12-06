@@ -381,7 +381,13 @@
                         <ol>
                             <?php
                                 for ($i = 0; $i < count($profs); ++$i){
-                                    echo "<details><summary>$profs[$i]</summary>$feedback[$i]</details>";
+                                    echo "<details><summary>$profs[$i]</summary>$feedback[$i]
+                                        <form action = 'request.php' method = 'post'>
+                                            <input type = 'hidden' name = 'c_username' value = $username>
+                                            <input type = 'hidden' name = 'p_username' value = $profs[$i]>
+                                            <input id = 'feedback' type = 'submit' value = 'Request'>
+                                        </form>
+                                        </details>";
                                 }
                             ?>
                         </ol>

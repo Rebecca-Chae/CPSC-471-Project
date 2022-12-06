@@ -14,13 +14,6 @@
         $username = $_SESSION['p_username'];
     }
 
-    if (isset($_GET["deletedEx"])){
-        //$toRemove = trim($_GET["deletedEx"], "X");
-        $toRemove = rtrim($_GET["deletedEx"], " X");
-        $q = "DELETE FROM Workout_Routine Where Client_Username = '".$client."' And Exercise_Name = '".$toRemove."'";
-        $a = mysqli_query($connection, $q);
-    }
-
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($_POST['c_username'])){
             $client = $_POST['c_username'];
@@ -40,9 +33,15 @@
 
         if(isset($_POST['addEx'])){
             $to_add = $_POST['addEx'];
-            $q = "INSERT INTO workout_routine (Exercise_Name, Client_Username) values('".$to_add."','".$client."')";
+            $q = "INSERT INTO Workout_Routine (Exercise_Name, Client_Username) values('".$to_add."','".$client."')";
             $a = mysqli_query($connection, $q);
         }    
+    }
+
+    if (isset($_GET["deletedEx"])){
+        $toRemove = rtrim($_GET["deletedEx"], " X");
+        $q = "DELETE FROM Workout_Routine where Client_Username = '".$client."' and Exercise_Name = '".$toRemove."'";
+        $a = mysqli_query($connection, $q);
     }
 
     $q = "SELECT * FROM Body_Measurement Where Username = '".$client."'";

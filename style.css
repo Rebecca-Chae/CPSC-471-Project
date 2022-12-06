@@ -136,7 +136,7 @@ ol li{
     background-color: white;
 }
 
-#addExercise, #addFood, #addFeedback, #addRoutine{
+#addExercise, #addFood, #addFeedback, #addRoutine, #addExerciseButton{
     display: inline-block;
     margin-left: 10px;
     padding: 10px;
@@ -203,6 +203,7 @@ ol li{
 
 #professionals summary, #clients summary{
     margin: 10px;
+    cursor: pointer;
 }
 
 #addedFriends{
@@ -289,49 +290,107 @@ label span{
 
 /* professionals */
 
-#cal{
+.cal{
     margin-left: 30px;
     float: left;
+    width: 600px;
     background-color: white;
-    /* border-collapse : collapse; */
+    justify-content: center;
+    align-items: center;
 }
 
-#cal thead{
-    width: 100px;
-    height: 80px;
+.month{
+    display: inline-block;
+    width: 600px;
+    background-color: rgb(101, 175, 248);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.month ul{
     color: white;
+    text-transform: uppercase;
+    display: flex;
+    font-size: x-large;
+    justify-content: center;
+    align-items: center;
+}
+
+.month .previous {
+    float: left;
+    margin-right: 150px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.month .next {
+    float: right;
+    margin-left: 150px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.week{
+    padding-top: 10px;  padding-bottom: 10px;
+    border-top: 3px solid white;
     background-color: rgb(101, 175, 248);
 }
 
-#cal tbody tr td{
-    width: 100px;
-    height: 80px;
-    font-weight: bold;
+.week ul li{
+    color: white;
+    display: inline;
+    list-style: none;
+    margin: 23px;
 }
 
-#sun, #cal tbody td:first-child{
-    color: rgb(214, 15, 58);
+#day{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 5px;
 }
 
-#sat, #cal tbody td:last-child{
-    color: rgb(41, 52, 130);
+#day div:active{
+    background-color: rgb(193, 224, 255);
 }
 
-/* .appoints{
-    display: inline-block;
-    width: 150px;
-    height: 480px;
-    background-color: rgb(242, 249, 255);
-}
-
-.bookings {
-    float: left;
-    overflow-wrap:break-word;
-}
-
-.det summary{
+#day div:hover{
+    color: rgb(101, 175, 248);
+    transition: 0.2s;
     cursor: pointer;
-} */
+}
+
+#day div {
+    padding: 10px;
+    width: 65px;
+    height: 35px;
+}
+
+.appoints{
+    display: inline-block;
+    margin-left: 30px;
+    width: 200px;
+    height: 350px;
+    background-color: rgb(230, 242, 255);
+    border-radius: 10px;
+}
+
+.header, #bookings{
+    margin: 10px;
+    overflow-wrap: break-word;
+}
+
+#addAppointment{
+    clear: both;
+    margin: 30px;
+}
+
+#addRecAppoint{
+    margin-top: 10px;
+}
+
+#addExerciseButton{
+    width: 150px;
+}
 
 /* Footer */
 

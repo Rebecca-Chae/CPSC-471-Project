@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     $secret = '';
 
     // IP, ID, Password, Name of DB
@@ -8,7 +10,9 @@
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
     // Get the username from the log-in page
-    if (!($username = $_POST['username'])) $username = "JennySmith123";
+    if (isset($_SESSION['username'])){
+        $username = $_SESSION['username'];
+    }
 
     // Get the body measurements
     $row = mysqli_query($connection, "SELECT * FROM Body_Measurement where Username = '".$username."'");
@@ -32,6 +36,11 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if (isset($_POST['username'])){
+            $username = $_POST['username'];
+            $_SESSION['username'] = $username;
+        }
+
         if ($newExercise = $_POST['addEx']){
             $row = mysqli_query($connection, "SELECT * FROM Exercise where Exercise_Name = '".$newExercise."'");
             if (mysqli_fetch_array($row)){ 

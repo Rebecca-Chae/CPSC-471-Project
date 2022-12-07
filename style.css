@@ -210,8 +210,8 @@ ol li{
     margin-top: 10px;
 }
 
-#addFriends, #feedback{
-    margin-top: 15px;
+#addFriends, #feedback, #addClient{
+    margin-top: 15px;   margin-bottom: 15px;
     padding: 10px;
     font-size: 14px;    font-weight: bold;
     border: 0;
@@ -221,7 +221,7 @@ ol li{
     box-shadow: 0px 3px rgb(98, 146, 194);
 }
 
-#addFriends:hover, #feedback:hover{
+#addFriends:hover, #feedback:hover, #addClient:hover{
     background-color: rgb(144, 193, 243);
 }
 

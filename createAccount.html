@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang = "en-US">
+    <head>
+        <link href = "./style.css?ver=1" rel = "stylesheet"> <!-- We can put an externally made css file in here -->
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+        <title>Fitness Tracker</title>
+        <style>
+        h1 {
+            text-align: center;
+          }</style>
+    </head>
+    <body>
+        <h1> Fitness tracker </h1>
+        <h2> Create Account</h2>
+
+        <form action="createAccountAuthenticate.php" method = "post">
+            <label>Enter a username: </label>
+            <input type="text" id="newusername" name="newusername" placeholder="Type in your username here" size = 26><br><br>
+            <label>Enter a password: </label>
+            <input type="password" id="newpassword1" name="password1" placeholder="Type in your password here" size = 26><br><br>
+            <label>Re-enter a password: </label>
+            <input type="password" id="newpassword2" name="password2" placeholder="Type in your password here" size = 26><br><br>
+            <label>Choose your role: </label>
+            <select name = "class">
+                <option selected value="client">Client</option>
+                <option value="personal_trainer">Personal Trainer</option>
+                <option value="nutritionist">Nutritionist</option>
+            </select>
+            <input type="submit" id = "submitbutton" value="Create account">
+        </form>
+    </body>
+</html>

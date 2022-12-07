@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang = "en-US">
+    <head>
+        <link href = "./style.css?ver=1" rel = "stylesheet"> <!-- We can put an externally made css file in here -->
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+        <title>Fitness Tracker</title>
+        <style>
+        h1 {
+            text-align: center;
+          }</style>
+    </head>
+    <body>
+        <h1> Fitness tracker </h1>
+        
+        <form action="loginAuthentication.php" method = "post">
+            <label>Username: </label>
+            <input type="text" id="username" name="username" placeholder="Type in your username here" size = 26><br><br>
+            <label>Password: </label>
+            <input type="password" id="password" name="password" placeholder="Type in your password here" size = 26><br><br>
+            <input type="submit" id = "submitbutton" value="Log in">
+        </form>
+        <button type="button" onclick = "location.href='createAccount.html'">Create account</button>
+    </body>
+</html>

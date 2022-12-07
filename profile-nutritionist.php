@@ -11,12 +11,12 @@
       $username = $_SESSION['username'];
     }
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
       if (isset($_POST['username'])){
         $username = $_POST['username'];
         $_SESSION['username'] = $username;
       }
-      
+
       if(isset($_POST['Professional'])){
         $username = $_POST['Professional'];
       }
@@ -115,11 +115,11 @@
           </tr>
           <tr align = "center">
             <td>
-              <ol>
+                <ol>
                 <?php
                   for ($i = 0; $i < count($clients_arr); $i++){
                     echo "<details class = 'det'><summary>$clients_arr[$i]</summary>$clients_meas[$i]
-                            <form action = 'feedback.php' method = 'post'>
+                            <form action = 'feedbackN.php' method = 'post'>
                               <input type = 'hidden' name = 'c_username' value = $clients_arr[$i]>
                               <input type = 'hidden' name = 'p_username' value = $username>
                               <input id = 'feedback' type = 'submit' value = 'Feedback'>
@@ -127,11 +127,11 @@
                           </details>";
                   }
                 ?>
-              </ol>
-              <form action = "profile-nutritionist.php" method = "post">
-                  <input type = "text" name = "addClient" id = "addedClient" style = "width: 150px; height: 30px;">
-                  <input id = "addClient" type = "submit" value = "Add Client">
-              </form>
+                </ol>
+                <form action = "profile-nutritionist.php" method = "post">
+                    <input type = "text" name = "addClient" id = "addedClient" style = "width: 150px; height: 30px;">
+                    <input id = "addClient" type = "submit" value = "Add Client">
+                </form>
             </td>
           </tr>
         </table>

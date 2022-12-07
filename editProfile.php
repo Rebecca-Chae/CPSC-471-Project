@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     $secret = '';
 
     // IP, ID, Password, Name of DB
@@ -8,17 +10,27 @@
     if (mysqli_connect_error($connection)) echo "Failed to connect to MySQL: " . mysqli_connect_error();
 
     // Get the username from the profile page/refresh
-    if (isset($_GET['user'])) $username = $_GET['user'];
-    else $username = $_POST['username'];
+    if (isset($_SESSION['username'])){
+        $username = $_SESSION['username'];
+      }
 
     $row = mysqli_query($connection, "SELECT * FROM Client where Username = '".$username."'");
     if (mysqli_fetch_array($row)) $page = "profile-client.php";
     else {
-        $row = mysqli_query($connection, "SELECT * FROM Professional where Username = '".$username."'");
+        $row = mysqli_query($connection, "SELECT * FROM Personal_Trainer where Username = '".$username."'");
         if (mysqli_fetch_array($row)) $page = "profile-professional.php";
+        else{
+            $row = mysqli_query($connection, "SELECT * FROM Nutritionist where Username = '".$username."'");
+            if (mysqli_fetch_array($row)) $page = "profile-nutritionist.php";
+        }
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if (isset($_POST['username'])){
+            $username = $_POST['username'];
+            $_SESSION['username'] = $username;
+         }
+        
         $date = $_POST['date'];
         $weight = $_POST['weight'];
         $waist = $_POST['waist'];
@@ -55,7 +67,7 @@
             </div>
             <div id = "option" style = "float: right;">
                 <form action = <?php echo $page;?> method = "post">
-                    <input type = "hidden" name = "username" value = <?php echo $newName;?>>
+                    <input type = "hidden" name = "username" value = <?php echo $username;?>>
                     <input id = "b1" type = "submit" value = "Go Back">
                 </form>
             </div>

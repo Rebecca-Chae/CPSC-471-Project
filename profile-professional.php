@@ -81,7 +81,7 @@
 <!DOCTYPE html>
 <html lang = "en-US">
     <head>
-        <link href = "./style.css?ver=1" rel = "stylesheet">
+        <link href = "./style1.css?ver=1" rel = "stylesheet">
         <meta charset = "utf-8">
         <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
         <title>Fitness Tracker</title>
@@ -98,7 +98,7 @@
               <input type = "hidden" name = "username" value = <?php echo $username;?>>
               <input id = "b1" type = "submit" value = "Edit Profile">
           </form>
-          <form action = "logOut.php" method = "post">
+          <form action = "LogOut.html" method = "post">
               <input id = "b2" type = "submit" value = "Log Out">
           </form>
         </div>
@@ -128,7 +128,7 @@
                   }
                 ?>
               </ol>
-              <form action = "profile-nutritionist.php" method = "post">
+              <form action = "profile-professional.php" method = "post">
                   <input type = "text" name = "addClient" id = "addedClient" style = "width: 150px; height: 30px;">
                   <input id = "addClient" type = "submit" value = "Add Client">
               </form>

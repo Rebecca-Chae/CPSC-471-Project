@@ -55,7 +55,7 @@
 
 <!DOCTYPE html>
     <head>
-        <link href = "./style.css?ver=1" rel = "stylesheet">
+        <link href = "./style1.css?ver=1" rel = "stylesheet">
         <meta charset = "utf-8">
         <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
         <title>Fitness Tracker</title>

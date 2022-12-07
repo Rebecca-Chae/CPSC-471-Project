@@ -13,7 +13,7 @@
     <body>
         <h1> Fitness tracker </h1>
         
-        <form action="/action_page.php">
+        <form action="/loginAuthentication.php" method = "post">
             <label for="username">Username: </label>
             <input type="text" id="username" name="username" placeholder="Type in your username here" size = 26><br><br>
             <label for="password">Password: </label>
@@ -21,17 +21,5 @@
             <input type="submit" id = "submitbutton" value="Log in">
         </form>
         <button type="button">Create account</button>
-    
-        <script>
-            function validatelogin()
-                {
-                    var user = document.f1.username.value;
-                    var pass = document.f1.password.value;
-                    if (user.length == "" || pass.length == "") {
-                        alert("Username and password cannot be empty");
-                        return false;
-                    }
-                }
-        </script>
     </body>
 </html>

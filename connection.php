@@ -1,5 +1,5 @@
 <?php
-    $secret = 'overCooksanji0302*';
+    $secret = '';
 
     // IP, ID, Password, Name of DB
     $connection = mysqli_connect("localhost", "root", $secret, "database");
